@@ -1,0 +1,32 @@
+# Entornos virtuales de Python
+env/
+pytest_cache/
+
+# Cachés y ficheros compilados de Python
+crypto-encryption-app/src/__pycache__/
+*.py[cod]
+*$py.class
+
+# Caché de pytest
+.pytest_cache/
+
+# Informes de cobertura
+.coverage
+.coverage.*
+htmlcov/
+
+# Artefactos de distribución / empaquetado
+build/
+dist/
+*.egg-info/
+pip-wheel-metadata/
+
+# Archivos de logs y temporales
+*.log
+
+# Configuración de VS Code
+.vscode/
+
+# Archivos del sistema operativo
+.DS_Store
+Thumbs.db

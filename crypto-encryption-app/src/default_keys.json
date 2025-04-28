@@ -1,0 +1,9 @@
+{
+  "caesar": 3,
+  "aes": "00112233445566778899aabbccddeeff",
+  "rsa": {
+    "public_key": "",
+    "private_key": ""
+  },
+  "hybrid": ""
+}
