@@ -6,9 +6,9 @@ def generate_key():
     return os.urandom(16)  # Tamaño de clave AES: 16 bytes (128 bits)
 
 def aes_encrypt(data, key):
-    # Normalizar entrada: soporta numérico, alfanumérico, símbolos; convertir a cadena en minúsculas si no es bytes
+    # Normalize input: support numbers, alphanumerics, symbols; preserve case
     if not isinstance(data, (bytes, bytearray)):
-        data = str(data).lower()
+        data = str(data)
     if isinstance(data, str):
         data_bytes = data.encode()
     else:

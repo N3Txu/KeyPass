@@ -12,9 +12,9 @@ def rsa_generate_keys():
     return public_key, private_key
 
 def rsa_encrypt(message, public_key):
-    # Normalizar entrada: soporta números, alfanuméricos, símbolos; convertir a una cadena en minúsculas
+    # Normalize input: support numbers, alphanumeric, symbols; preserve case
     if not isinstance(message, (bytes, bytearray)):
-        message = str(message).lower()
+        message = str(message)
     ciphertext = public_key.encrypt(
         message.encode(),
         padding.OAEP(

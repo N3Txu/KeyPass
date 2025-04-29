@@ -1,18 +1,18 @@
-import random
-import hashlib
 import secrets
-import json
-
 from cryptography.hazmat.primitives.kdf.hkdf import HKDF
 from cryptography.hazmat.primitives import hashes
 from cryptography.hazmat.primitives.ciphers.aead import AESGCM
 
 
 def simulate_bb84_key(num_bits=64):
-    # Simular QKD usando protocolo BB84
-    bits = [random.randint(0, 1) for _ in range(num_bits)]
-    bases_sender = [random.choice(['Z', 'X']) for _ in range(num_bits)]
-    bases_receiver = [random.choice(['Z', 'X']) for _ in range(num_bits)]
+    """
+    Simula la distribución de clave cuántica BB84 con clave tamizada de longitud num_bits//2 utilizando aleatoriedad criptográficamente segura.
+    Retorna:
+        List[int]: bits tamizados.
+    """
+    bits = [secrets.randbelow(2) for _ in range(num_bits)]
+    bases_sender = [secrets.choice(['Z', 'X']) for _ in range(num_bits)]
+    bases_receiver = [secrets.choice(['Z', 'X']) for _ in range(num_bits)]
     sifted = []
     for bit, bs, br in zip(bits, bases_sender, bases_receiver):
         if bs == br:
@@ -37,6 +37,9 @@ def simulate_diffie_hellman():
 
 
 def derive_final_key(bb84_key, dh_key):
+    """
+    Deriva una clave simétrica a partir de los bits de BB84 y el secreto compartido de Diffie-Hellman usando HKDF-SHA3-256.
+    """
     # Combinar bits de BB84 en bytes
     bb_bytes = bytes(int(''.join(str(bit) for bit in bb84_key[i : i + 8]), 2) for i in range(0, len(bb84_key), 8))
     # Convertir el entero DH a bytes
@@ -52,21 +55,15 @@ def derive_final_key(bb84_key, dh_key):
 
 
 def hybrid_encrypt(plaintext: str) -> dict:
-    # Normalizar la entrada: admite numéricos, alfanuméricos y símbolos; convertir a cadena en minúsculas
+    """
+    Realiza la encriptación híbrida: BB84, Diffie-Hellman, HKDF, AES-GCM.
+    Retorna un diccionario con iv, ciphertext, key (cadenas hexadecimales).
+    """
     if not isinstance(plaintext, (bytes, bytearray)):
-        plaintext = str(plaintext).lower()
-    """
-    Realiza cifrado híbrido:
-    - Simular QKD BB84
-    - Intercambio de claves Diffie-Hellman
-    - Derivar clave final vía HKDF-SHA3
-    - Cifrar usando AES-GCM
-    Devuelve un dict con iv, ciphertext y key (cadenas hexadecimales).
-    """
+        plaintext = str(plaintext)
     bb84 = simulate_bb84_key()
     dh_key = simulate_diffie_hellman()
     final_key = derive_final_key(bb84, dh_key)
-    # Cifrado AES-GCM
     aesgcm = AESGCM(final_key)
     iv = secrets.token_bytes(12)
     ct = aesgcm.encrypt(iv, plaintext.encode(), None)
@@ -75,8 +72,8 @@ def hybrid_encrypt(plaintext: str) -> dict:
 
 def hybrid_decrypt(iv_hex: str, ciphertext_hex: str, key_hex: str) -> str:
     """
-    Descifrar un mensaje cifrado con hybrid_encrypt.
-    Requiere iv, ciphertext y key como cadenas hexadecimales.
+    Descifra un mensaje encriptado de manera híbrida.
+    Argumentos: iv_hex, ciphertext_hex, key_hex (cadenas hexadecimales).
     """
     iv = bytes.fromhex(iv_hex)
     ct = bytes.fromhex(ciphertext_hex)

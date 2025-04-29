@@ -2,3 +2,5 @@ cryptography
 pycryptodome
 qiskit
 pytest
+fastapi
+uvicorn

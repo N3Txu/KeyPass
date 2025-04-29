@@ -1,12 +1,15 @@
 def caesar_encrypt(message, shift):
-    # Normalize input: support numbers, alphanumeric, symbols; convert to string and lowercase
-    message = str(message).lower()
+    # Normalize input: support numbers, alphanumeric, symbols; convert to string
+    message = str(message)
     encrypted_message = ""
     for char in message:
         if char.isalpha():
-            # letters shifted in lowercase
-            shift_base = ord('a')
-            encrypted_message += chr((ord(char) - shift_base + shift) % 26 + shift_base)
+            # preserve case: shift uppercase and lowercase letters separately
+            if char.isupper():
+                base = ord('A')
+            else:
+                base = ord('a')
+            encrypted_message += chr((ord(char) - base + shift) % 26 + base)
         elif char.isdigit():
             # shift digits modulo 10
             encrypted_message += chr((ord(char) - ord('0') + shift) % 10 + ord('0'))

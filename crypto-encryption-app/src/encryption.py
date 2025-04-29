@@ -1,29 +1,41 @@
 def encrypt_message(algorithm, message, key):
-    # Normalizar entrada: soporta dígitos, caracteres alfanuméricos y símbolos; convertir a minúsculas e incluir espacios
-    message = str(message).lower()
-    # Normalizar el algoritmo
+    """
+    Cifra un mensaje usando el algoritmo y la llave especificados.
+    Algoritmos soportados: 'caesar', 'aes', 'rsa', 'hybrid'.
+    Argumentos:
+        algorithm (str): nombre del cifrado.
+        message (str o bytes): texto plano a cifrar.
+        key: llave del cifrado: int para Caesar, bytes para AES, (pub, priv) para RSA, None para híbrido.
+    Retorna:
+        str: cadena de salida cifrada o campos hexadecimales para híbrido.
+    Lanza:
+        ValueError: en caso de error de validación o cifrado.
+    """
+    validate_key(algorithm, key)
     alg = algorithm.lower()
-    if alg == 'caesar':
-        from algorithms.caesar import caesar_encrypt
-        # Desplazamiento aleatorio cada vez si no hay clave predefinida
-        from random import randint
-        shift = randint(1, 25)
-        encrypted = caesar_encrypt(message, shift)
-        return f"{shift}:{encrypted}"
-    elif alg == 'aes':
-        from algorithms.aes import aes_encrypt
-        return aes_encrypt(message, key)
-    elif alg == 'rsa':
-        from algorithms.rsa import rsa_encrypt
-        public_key, _ = key
-        return rsa_encrypt(message, public_key)
-    elif alg == 'hybrid':
-        from algorithms.hybrid import hybrid_encrypt
-        # Usar cadena hex separada por dos puntos: iv:ciphertext:key
-        result = hybrid_encrypt(message)
-        return f"{result['iv']}:{result['ciphertext']}:{result['key']}"
-    else:
-        raise ValueError("Unsupported encryption algorithm")
+    try:
+        if alg == 'caesar':
+            # Caesar cipher: require integer key as shift
+            from algorithms.caesar import caesar_encrypt
+            shift = key
+            return caesar_encrypt(message, shift)
+        elif alg == 'aes':
+            from algorithms.aes import aes_encrypt
+            # AES-GCM: key validated above
+            return aes_encrypt(message, key)
+        elif alg == 'rsa':
+            from algorithms.rsa import rsa_encrypt
+            # RSA: asymmetric encryption pads internally
+            public_key, _ = key
+            return rsa_encrypt(message, public_key)
+        elif alg == 'hybrid':
+            from algorithms.hybrid import hybrid_encrypt
+            # Hybrid: returns JSON dict with salt, iv, ciphertext
+            return hybrid_encrypt(message)
+        else:
+            raise ValueError(f"Unsupported encryption algorithm: {algorithm}")
+    except Exception as e:
+        raise ValueError(f"Encryption failed for {algorithm}: {e}")
 
 def validate_key(algorithm, key):
     # Validar clave según el algoritmo (sin distinción de mayúsculas)

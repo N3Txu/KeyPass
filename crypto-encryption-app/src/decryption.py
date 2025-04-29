@@ -35,7 +35,7 @@ def validate_key(algorithm, key):
     elif alg == "rsa":
         if not isinstance(key, tuple) or len(key) != 2:
             raise ValueError("Key for RSA must be a tuple of (public_key, private_key)")
-    # Caesar and Hybrid do not require external key validation here
+    # Caesar y Hybrid no requieren validación externa de la clave aquí
     elif alg not in ("caesar", "hybrid"):
         raise ValueError("Unsupported decryption algorithm")
 
