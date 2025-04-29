@@ -4,13 +4,14 @@ import uvicorn
 from typing import Optional
 from encryption import encrypt_message
 from decryption import decrypt_message
+from Key import default_keys
+
 
 app = FastAPI()
 
 class EncryptRequest(BaseModel):
     message: str
     algorithm: str
-    key: Optional[str] = None
 
 class EncryptResponse(BaseModel):
     encrypted_message: str
@@ -18,16 +19,25 @@ class EncryptResponse(BaseModel):
 class DecryptRequest(BaseModel):
     encrypted_message: str
     algorithm: str
-    key: Optional[str] = None
+    
 
 class DecryptResponse(BaseModel):
     decrypted_message: str
+    
+@app.post("/")
+async def root():
+    return {"message": "Todo OK desde raíz"}
+
+@app.get("/")
+async def root_get():
+    return {"message": "Todo OK desde raíz GET"}
 
 @app.post('/encrypt', response_model=EncryptResponse)
 def encrypt(req: EncryptRequest) -> EncryptResponse:
     message = req.message
     algorithm = req.algorithm
-    key = req.key
+    key = default_keys.get(algorithm.lower())
+    
     # Convierte la clave AES de hexadecimal si se proporciona como cadena
     if algorithm.lower() == 'aes' and key is not None:
         key = bytes.fromhex(key)
@@ -43,7 +53,7 @@ def encrypt(req: EncryptRequest) -> EncryptResponse:
 def decrypt(req: DecryptRequest) -> DecryptResponse:
     encrypted_message = req.encrypted_message
     algorithm = req.algorithm
-    key = req.key
+    key = default_keys.get(algorithm.lower())
     # Convierte la clave AES y el texto cifrado de hexadecimal
     if algorithm.lower() == 'aes' and key is not None:
         key = bytes.fromhex(key)
