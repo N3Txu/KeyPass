@@ -1,1 +1,1 @@
-web: uvicorn src.API:app --host 0.0.0.0 --port $PORT
+web: PYTHONPATH=crypto-encryption-app uvicorn src.API:app --host 0.0.0.0 --port $PORT
