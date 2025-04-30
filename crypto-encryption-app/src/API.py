@@ -1,9 +1,10 @@
 from fastapi import FastAPI, HTTPException
 from pydantic import BaseModel
 from typing import Optional
-from src.encryption import encrypt_message
-from src.decryption import decrypt_message
-from src.Key import default_keys
+from encryption import encrypt_message
+from decryption import decrypt_message
+from Key import default_keys
+
 import uvicorn
 
 app = FastAPI()
