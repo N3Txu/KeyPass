@@ -1,1 +1,1 @@
-web: uvicorn crypto-encryption-app.src.API:app --host 0.0.0.0 --port $PORT
+web: uvicorn main:app --host=0.0.0.0 --port=5000
