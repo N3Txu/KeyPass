@@ -24,7 +24,7 @@ def get_default_key(algorithm):
     if alg == 'caesar':
         return default_keys.get('caesar')
     elif alg == 'aes':
-        return bytes.fromhex(default_keys.get('aes', ''))
+        return default_keys.get('aes')
     elif alg == 'rsa':
         # Generate or reuse one RSA key pair per session
         global rsa_cached_keys
