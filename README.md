@@ -15,23 +15,25 @@ La Aplicación de Criptografía es una aplicación en Python diseñada para cifr
 
 ```plaintext
 .
-├── main.py               # Punto de entrada para iniciar la API con Uvicorn
-├── Procfile              # Definición de proceso para despliegue (Heroku, etc.)
-├── crypto-encryption-app
-│   └── src
-│       ├── API.py           # Endpoints de la API con FastAPI
-│       ├── encryption.py    # Funciones de cifrado de mensajes
-│       ├── decryption.py    # Funciones de descifrado de mensajes
-│       ├── Key.py          # Gestión de claves por defecto
-│       ├── default_keys.json # Claves por defecto en JSON
-│       └── algorithms       # Implementaciones de algoritmos
-│           ├── caesar.py    # Cifrado César
-│           ├── aes.py       # Cifrado AES
-│           ├── rsa.py       # Cifrado RSA
-│           └── hybrid.py    # Cifrado híbrido
-├── tests                   # Pruebas unitarias
-│   └── test_encryption.py  # Pruebas para cifrado y descifrado
-└── requirements.txt        # Dependencias del proyecto
+├── main.py                  # Punto de entrada para iniciar la API con Uvicorn
+├── Procfile                 # Definición de proceso para despliegue (Heroku, etc.)
+├── crypto_app               # Código fuente de la aplicación
+│   ├── __init__.py
+│   ├── src
+│   │   ├── API.py            # Endpoints de la API con FastAPI
+│   │   ├── encryption.py     # Funciones de cifrado de mensajes
+│   │   ├── decryption.py     # Funciones de descifrado de mensajes
+│   │   ├── Key.py            # Gestión de claves por defecto
+│   │   ├── default_keys.json # Claves por defecto en JSON
+│   │   └── algorithms        # Implementaciones de algoritmos
+│   │       ├── caesar.py     # Cifrado César
+│   │       ├── aes.py        # Cifrado AES
+│   │       ├── rsa.py        # Cifrado RSA
+│   │       └── hybrid.py     # Cifrado híbrido
+│   └── tests                 # Pruebas unitarias
+│       └── test_encryption.py # Pruebas para cifrado y descifrado
+├── requirements.txt          # Dependencias del proyecto
+└── README.md                 # Documentación del proyecto
 ```
 
 ## Instalación
@@ -42,7 +44,7 @@ La Aplicación de Criptografía es una aplicación en Python diseñada para cifr
    ```
 2. Accede al directorio del proyecto:
    ```bash
-   cd crypto-encryption-app
+   cd KeyPass
    ```
 3. Instala las dependencias:
    ```bash
