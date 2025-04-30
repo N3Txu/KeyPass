@@ -1,7 +1,7 @@
-from .algorithms.rsa import rsa_encrypt, rsa_generate_keys
-from .algorithms.caesar import caesar_encrypt
-from .algorithms.aes import aes_encrypt
-from .algorithms.hybrid import hybrid_encrypt
+from algorithms.rsa import rsa_encrypt, rsa_generate_keys
+from algorithms.caesar import caesar_encrypt
+from algorithms.aes import aes_encrypt
+from algorithms.hybrid import hybrid_encrypt
 import secrets
             
 def encrypt_message(algorithm, message, key):
@@ -27,6 +27,7 @@ def encrypt_message(algorithm, message, key):
             # Incluir el desplazamiento en el resultado para descifrado
             return f"{shift}:{cipher_text}"
         elif alg == 'aes':
+
             # AES-GCM: key validated above
             return aes_encrypt(message, key)
         elif alg == 'rsa':
