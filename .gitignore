@@ -1,7 +1,6 @@
 # Entornos virtuales de Python
 env/
 pytest_cache/
-
 # Cachés y ficheros compilados de Python
 crypto-encryption-app/src/__pycache__/
 *.py[cod]
