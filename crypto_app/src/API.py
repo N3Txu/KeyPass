@@ -2,9 +2,9 @@ from fastapi import FastAPI, HTTPException
 from fastapi.middleware.cors import CORSMiddleware
 from pydantic import BaseModel
 from typing import Optional
-from encryption import encrypt_message
-from decryption import decrypt_message
-from Key import default_keys
+from .encryption import encrypt_message
+from .decryption import decrypt_message
+from .Key import default_keys
 
 import uvicorn
 

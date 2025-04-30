@@ -1,7 +1,7 @@
-from src.algorithms.caesar import caesar_decrypt
-from src.algorithms.aes import aes_decrypt
-from src.algorithms.rsa import rsa_decrypt, rsa_generate_keys
-from src.algorithms.hybrid import hybrid_decrypt
+from .algorithms.caesar import caesar_decrypt
+from .algorithms.aes import aes_decrypt
+from .algorithms.rsa import rsa_decrypt, rsa_generate_keys
+from .algorithms.hybrid import hybrid_decrypt
 
 
 def decrypt_message(encrypted_message, key, algorithm):
