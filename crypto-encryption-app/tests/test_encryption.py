@@ -1,7 +1,4 @@
 import unittest
-from src.encryption import encrypt_message
-from src.decryption import decrypt_message
-
 class TestEncryption(unittest.TestCase):
 
     def test_caesar_encryption(self):
@@ -32,14 +29,19 @@ class TestAlgorithmRoundtripAndRandomness(unittest.TestCase):
     def setUp(self):
         self.message = "HelloWorld"
 
-    def test_caesar_deterministic(self):
-        from src.algorithms.caesar import caesar_encrypt, caesar_decrypt
-        key = 5
-        c1 = caesar_encrypt(self.message, key)
-        c2 = caesar_encrypt(self.message, key)
-        self.assertEqual(c1, c2)
-        p = caesar_decrypt(c1, key)
-        self.assertEqual(p, self.message)
+    def test_caesar_nondeterministic(self):
+        from src.encryption import encrypt_message
+        from src.decryption import decrypt_message
+        key = 3
+        c1 = encrypt_message('caesar', self.message, key)
+        c2 = encrypt_message('caesar', self.message, key)
+        # Cada cifrado debe variar
+        self.assertNotEqual(c1, c2)
+        # Validar que ambos descifran correctamente
+        p1 = decrypt_message(c1, key, 'caesar')
+        self.assertEqual(p1, self.message)
+        p2 = decrypt_message(c2, key, 'caesar')
+        self.assertEqual(p2, self.message)
 
     def test_aes_nondeterministic(self):
         from src.algorithms.aes import generate_key, aes_encrypt, aes_decrypt

@@ -1,8 +1,13 @@
+from src.algorithms.caesar import caesar_decrypt
+from src.algorithms.aes import aes_decrypt
+from src.algorithms.rsa import rsa_decrypt, rsa_generate_keys
+from src.algorithms.hybrid import hybrid_decrypt
+
+
 def decrypt_message(encrypted_message, key, algorithm):
     alg = algorithm.lower()
     # Manejar César con desplazamiento embebido
     if alg == "caesar":
-        from algorithms.caesar import caesar_decrypt
         if isinstance(encrypted_message, str) and ':' in encrypted_message:
             shift_str, cipher_text = encrypted_message.split(':', 1)
             shift = int(shift_str)
@@ -10,17 +15,14 @@ def decrypt_message(encrypted_message, key, algorithm):
         else:
             return caesar_decrypt(encrypted_message, key)
     elif alg == "aes":
-        from algorithms.aes import aes_decrypt
         validate_key(alg, key)
         return aes_decrypt(encrypted_message, key)
     elif alg == "rsa":
-        from algorithms.rsa import rsa_decrypt
         validate_key(alg, key)
         # La clave es una tupla (pública, privada)
         _, private_key = key
         return rsa_decrypt(encrypted_message, private_key)
     elif alg == 'hybrid':
-        from algorithms.hybrid import hybrid_decrypt
         # Esperar hex separada por dos puntos: iv:ciphertext:key
         iv_hex, ct_hex, key_hex = encrypted_message.split(':', 2)
         return hybrid_decrypt(iv_hex, ct_hex, key_hex)
@@ -49,7 +51,6 @@ def main():
     elif algorithm.lower() == 'aes':
         key = input("Enter key (string): ").encode()
     elif algorithm.lower() == 'rsa':
-        from algorithms.rsa import rsa_generate_keys
         public_key, private_key = rsa_generate_keys()
         print("Generated RSA key pair.")
         key = (public_key, private_key)

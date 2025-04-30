@@ -1,3 +1,9 @@
+from src.algorithms.rsa import rsa_encrypt, rsa_generate_keys
+from src.algorithms.caesar import caesar_encrypt
+from src.algorithms.aes import aes_encrypt
+from src.algorithms.hybrid import hybrid_encrypt
+import secrets
+            
 def encrypt_message(algorithm, message, key):
     """
     Cifra un mensaje usando el algoritmo y la llave especificados.
@@ -15,21 +21,19 @@ def encrypt_message(algorithm, message, key):
     alg = algorithm.lower()
     try:
         if alg == 'caesar':
-            # Caesar cipher: require integer key as shift
-            from algorithms.caesar import caesar_encrypt
-            shift = key
-            return caesar_encrypt(message, shift)
+            # Generar desplazamiento aleatorio entre 1 y 25
+            shift = secrets.randbelow(25) + 1
+            cipher_text = caesar_encrypt(message, shift)
+            # Incluir el desplazamiento en el resultado para descifrado
+            return f"{shift}:{cipher_text}"
         elif alg == 'aes':
-            from algorithms.aes import aes_encrypt
             # AES-GCM: key validated above
             return aes_encrypt(message, key)
         elif alg == 'rsa':
-            from algorithms.rsa import rsa_encrypt
             # RSA: asymmetric encryption pads internally
             public_key, _ = key
             return rsa_encrypt(message, public_key)
         elif alg == 'hybrid':
-            from algorithms.hybrid import hybrid_encrypt
             # Hybrid: returns JSON dict with salt, iv, ciphertext
             return hybrid_encrypt(message)
         else:
@@ -64,7 +68,6 @@ def main():
     elif algorithm.lower() == 'aes':
         key = input("Enter key (string): ").encode()
     elif algorithm.lower() == 'rsa':
-        from algorithms.rsa import rsa_generate_keys
         public_key, private_key = rsa_generate_keys()
         print("Generated RSA key pair.")
         key = (public_key, private_key)
