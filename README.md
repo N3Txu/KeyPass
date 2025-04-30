@@ -13,22 +13,25 @@ La Aplicación de Criptografía es una aplicación en Python diseñada para cifr
 
 ## Estructura del proyecto
 
-```
-crypto-encryption-app
-├── src
-│   ├── main.py               # Punto de entrada de la aplicación
-│   ├── encryption.py         # Funciones de cifrado de mensajes
-│   ├── decryption.py         # Funciones de descifrado de mensajes
-│   ├── algorithms            # Directorio con implementaciones de algoritmos
-│   │   ├── caesar.py         # Implementación del cifrado César
-│   │   ├── aes.py            # Implementación AES
-│   │   ├── rsa.py            # Implementación RSA
-│   │   └── hybrid.py         # Implementación híbrida
-│   └── ui.py                 # Gestión de la interfaz de usuario
-├── tests                     # Pruebas unitarias
-│   └── test_encryption.py    # Pruebas para funciones de cifrado y descifrado
-├── requirements.txt          # Dependencias del proyecto
-└── README.md                 # Documentación del proyecto
+```plaintext
+.
+├── main.py               # Punto de entrada para iniciar la API con Uvicorn
+├── Procfile              # Definición de proceso para despliegue (Heroku, etc.)
+├── crypto-encryption-app
+│   └── src
+│       ├── API.py           # Endpoints de la API con FastAPI
+│       ├── encryption.py    # Funciones de cifrado de mensajes
+│       ├── decryption.py    # Funciones de descifrado de mensajes
+│       ├── Key.py          # Gestión de claves por defecto
+│       ├── default_keys.json # Claves por defecto en JSON
+│       └── algorithms       # Implementaciones de algoritmos
+│           ├── caesar.py    # Cifrado César
+│           ├── aes.py       # Cifrado AES
+│           ├── rsa.py       # Cifrado RSA
+│           └── hybrid.py    # Cifrado híbrido
+├── tests                   # Pruebas unitarias
+│   └── test_encryption.py  # Pruebas para cifrado y descifrado
+└── requirements.txt        # Dependencias del proyecto
 ```
 
 ## Instalación
@@ -48,17 +51,31 @@ crypto-encryption-app
 
 ## Uso
 
-Ejecuta la aplicación con:
+Ejecuta la aplicación localmente:
 
 ```bash
-python src/main.py
+python main.py
 ```
 
-Sigue las indicaciones:
+O usando Uvicorn con recarga en desarrollo:
 
-1. Cifrar un mensaje
-2. Descifrar un mensaje
-3. Salir
+```bash
+uvicorn API:app --reload --host 0.0.0.0 --port 5000
+```
+
+La API expone los siguientes endpoints:
+
+- **POST /encrypt**: cifrar un mensaje.
+- **POST /decrypt**: descifrar un mensaje.
+
+Sigue las peticiones en JSON según el modelo:
+
+```json
+{
+  "message": "texto",
+  "algorithm": "aes"
+}
+```
 
 ## Algoritmos soportados
 
@@ -73,6 +90,15 @@ Para ejecutar las pruebas unitarias:
 
 ```bash
 python -m unittest discover -s tests
+```
+
+## Despliegue
+
+Para desplegar en Heroku u otra plataforma compatible con Procfile:
+
+```bash
+heroku create
+git push heroku main
 ```
 
 ## Contribuciones
