@@ -1,6 +1,6 @@
 import os
 import json
-from .algorithms.rsa import rsa_generate_keys
+from algorithms.rsa import rsa_generate_keys
 
 KEYS_FILE = os.path.join(os.path.dirname(__file__), 'default_keys.json')
 
