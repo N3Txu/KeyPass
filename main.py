@@ -1,0 +1,13 @@
+import sys
+import os
+import uvicorn
+
+# Añadir el path del proyecto al PYTHONPATH
+base_dir = os.path.dirname(__file__)
+project_path = os.path.join(base_dir, 'crypto-encryption-app', 'src')
+sys.path.insert(0, project_path)
+
+from API import app  # Ahora esto funcionará correctamente
+
+if __name__ == "__main__":
+    uvicorn.run(app, host="0.0.0.0", port=5000)
