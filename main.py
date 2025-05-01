@@ -2,12 +2,12 @@ import sys
 import os
 import uvicorn
 
-# Añadir el path del proyecto al PYTHONPATH
+# Añadir /crypto_app/src al PYTHONPATH dinámicamente
 base_dir = os.path.dirname(__file__)
-project_path = base_dir  # Añadir directorio raíz al PYTHONPATH
-sys.path.insert(0, project_path)
+src_path = os.path.join(base_dir, 'crypto_app', 'src')
+sys.path.insert(0, src_path)
 
-from crypto_app.src.API import app  # Ahora esto funcionará correctamente
+from API import app  # API.py está en /crypto_app/src
 
 if __name__ == "__main__":
     uvicorn.run(app, host="0.0.0.0", port=5000)
